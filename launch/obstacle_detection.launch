@@ -1,8 +1,53 @@
 <launch>
-  <node
-         pkg="turtlebot3_description"
-         type="gap_follower_node"
-         name="gap_follower_node"
-         output="screen"/>
+
+    <!-- Occupancy Grid Builder -->
+    <node
+        pkg="turtlebot3_description"
+        type="occupancy_grid_builder_node"
+        name="occupancy_grid_builder_node"
+        output="screen"/>
+
+    <!-- Goal Manager -->
+    <node
+        pkg="turtlebot3_description"
+        type="goal_manager_node"
+        name="goal_manager_node"
+        output="screen"/>
+
+    <!-- A* Planner -->
+    <node
+        pkg="turtlebot3_description"
+        type="astar_planner_node"
+        name="astar_planner_node"
+        output="screen"/>
+
+    <node
+        pkg="turtlebot3_description"
+        type="path_follower_node"
+        name="path_follower_node"
+        output="screen"/>
+    <node
+        pkg="turtlebot3_description"
+        type="odometry_tracker_node"
+        name="odometry_tracker_node"
+        output="screen"/>
+
+    <node
+        pkg="turtlebot3_description"
+        type="pure_pursuit_controller"
+        name="pure_pursuit_controller"
+        output="screen"/>
+
+    <node
+        pkg="turtlebot3_description"
+        type="goal_reached_manager"
+        name="goal_reached_manager"
+        output="screen"/>
+
+    <node
+        pkg="turtlebot3_description"
+        type="dynamic_replanner"
+        name="dynamic_replanner"
+        output="screen"/>
 
 </launch>
