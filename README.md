@@ -226,28 +226,28 @@ pose:
 
 ## Simulation Results
 
-### Gazebo Environment
+
 
 <p align="center">
-  <img src="docs/images/gazebo_environment.png" width="700">
+  <img src="results/1.png" width="700">
 </p>
 
-### Occupancy Grid Mapping
+
 
 <p align="center">
-  <img src="docs/images/occupancy_grid.png" width="700">
+  <img src="results/2.png" width="700">
 </p>
 
-### Path Planning Visualization
+
 
 <p align="center">
-  <img src="docs/images/path_planning.png" width="700">
+<img src="results/3.png" width="700">
 </p>
 
-### Obstacle Detection
+
 
 <p align="center">
-  <img src="docs/images/obstacle_detection.png" width="700">
+ <img src="results/4.png" width="700">
 </p>
 
 ---
