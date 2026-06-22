@@ -1,0 +1,32 @@
+<launch>
+
+  <!-- Load robot description -->
+  <param name="robot_description"
+         command="$(find xacro)/xacro '$(find turtlebot3_description)/urdf/turtlebot3_waffle.urdf.xacro'" />
+
+  <!-- Start Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- Spawn robot -->
+  <node pkg="gazebo_ros"
+        type="spawn_model"
+        name="spawn_turtlebot3"
+        args="-urdf -param robot_description -model turtlebot3"/>
+
+  <!-- Publish TF -->
+  <node pkg="robot_state_publisher"
+        type="robot_state_publisher"
+        name="robot_state_publisher"/>
+
+  <!-- Joint State Publisher -->
+  <node pkg="joint_state_publisher"
+        type="joint_state_publisher"
+        name="joint_state_publisher"/>
+
+</launch>
