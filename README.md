@@ -30,7 +30,10 @@ The objective of this project is to demonstrate fundamental robotics concepts in
 * A* path planning
 * Goal-based navigation
 * Path following controller
+* Pure Pursuit controller
+* Dynamic path replanning
 * Goal reached detection
+* Odometry tracking
 * Gazebo simulation environment
 * RViz visualization
 
@@ -57,10 +60,21 @@ Planned Path
 Path Follower
      |
      v
+Pure Pursuit Controller
+     |
+     v
 Velocity Commands
      |
      v
 TurtleBot3
+
+Goal Manager ---------> Goal
+
+Odometry Tracker <----- Odometry
+
+Goal Reached Manager <----- Goal + Odometry
+
+Dynamic Replanner <----- Map + Goal + Odometry
 ```
 
 ---
@@ -80,6 +94,18 @@ Generates a 2D occupancy grid map from LiDAR scan data.
 **Published Topics**
 
 * `/occupancy_grid`
+
+---
+
+### Goal Manager
+
+**Purpose**
+
+Handles navigation goal generation and management.
+
+**Published Topics**
+
+* `/goal`
 
 ---
 
@@ -105,7 +131,7 @@ Plans a path from the robot position to the target goal while avoiding detected 
 
 **Purpose**
 
-Follows the generated path and produces robot velocity commands.
+Converts the planned path into velocity commands for navigation.
 
 **Subscribed Topics**
 
@@ -118,11 +144,40 @@ Follows the generated path and produces robot velocity commands.
 
 ---
 
+### Pure Pursuit Controller
+
+**Purpose**
+
+Provides smooth path tracking using the Pure Pursuit algorithm.
+
+**Subscribed Topics**
+
+* `/planned_path`
+* `/odom`
+
+**Published Topics**
+
+* `/cmd_vel`
+
+---
+
+### Odometry Tracker
+
+**Purpose**
+
+Tracks the robot pose and odometry information.
+
+**Subscribed Topics**
+
+* `/odom`
+
+---
+
 ### Goal Reached Manager
 
 **Purpose**
 
-Monitors the robot position and determines when the goal has been reached.
+Detects when the robot reaches the target goal.
 
 **Subscribed Topics**
 
@@ -135,17 +190,35 @@ Monitors the robot position and determines when the goal has been reached.
 
 ---
 
+### Dynamic Replanner
+
+**Purpose**
+
+Triggers replanning when navigation conditions change.
+
+**Subscribed Topics**
+
+* `/occupancy_grid`
+* `/goal`
+* `/odom`
+
+**Published Topics**
+
+* `/planned_path`
+
+---
+
 ## ROS Topics
 
-| Topic           | Message Type              | Description             |
-| --------------- | ------------------------- | ----------------------- |
-| /scan           | sensor_msgs/LaserScan     | LiDAR scan data         |
-| /occupancy_grid | nav_msgs/OccupancyGrid    | Generated occupancy map |
-| /goal           | geometry_msgs/PoseStamped | Navigation goal         |
-| /planned_path   | nav_msgs/Path             | Planned path            |
-| /cmd_vel        | geometry_msgs/Twist       | Robot velocity commands |
-| /odom           | nav_msgs/Odometry         | Robot odometry          |
-| /goal_reached   | std_msgs/Bool             | Goal completion status  |
+| Topic | Message Type | Description |
+|---------|---------|---------|
+| /scan | sensor_msgs/LaserScan | LiDAR scan data |
+| /occupancy_grid | nav_msgs/OccupancyGrid | Generated occupancy map |
+| /goal | geometry_msgs/PoseStamped | Navigation goal |
+| /planned_path | nav_msgs/Path | Planned path |
+| /cmd_vel | geometry_msgs/Twist | Robot velocity commands |
+| /odom | nav_msgs/Odometry | Robot odometry |
+| /goal_reached | std_msgs/Bool | Goal completion status |
 
 ---
 
@@ -158,6 +231,7 @@ Monitors the robot position and determines when the goal has been reached.
 * C++
 * Occupancy Grid Mapping
 * A* Search Algorithm
+* Pure Pursuit Controller
 * Differential Drive Control
 
 ---
@@ -172,9 +246,13 @@ turtlebot3_description
 │
 ├── src
 │   ├── occupancy_grid_builder.cpp
+│   ├── goal_manager.cpp
 │   ├── astar_planner.cpp
 │   ├── path_follower.cpp
-│   └── goal_reached_manager.cpp
+│   ├── pure_pursuit_controller.cpp
+│   ├── odometry_tracker.cpp
+│   ├── goal_reached_manager.cpp
+│   └── dynamic_replanner.cpp
 │
 ├── urdf
 │
@@ -226,28 +304,20 @@ pose:
 
 ## Simulation Results
 
-
-
 <p align="center">
   <img src="results/1.png" width="700">
 </p>
-
-
 
 <p align="center">
   <img src="results/2.png" width="700">
 </p>
 
-
-
 <p align="center">
-<img src="results/3.png" width="700">
+  <img src="results/3.png" width="700">
 </p>
 
-
-
 <p align="center">
- <img src="results/4.png" width="700">
+  <img src="results/4.png" width="700">
 </p>
 
 ---
@@ -257,11 +327,11 @@ pose:
 * Dynamic obstacle avoidance
 * Dijkstra path planning
 * RRT path planning
-* Pure Pursuit controller
 * SLAM integration
 * Real TurtleBot3 deployment
 * RGB-D camera integration
 * Multi-obstacle navigation
+* Navigation in large-scale environments
 
 ---
 
@@ -272,7 +342,9 @@ Through this project, the following robotics concepts were implemented and teste
 * ROS Publisher/Subscriber communication
 * Occupancy Grid Mapping
 * A* Path Planning
+* Pure Pursuit Path Tracking
 * Autonomous Navigation
+* Dynamic Replanning
 * Robot Motion Control
 * Gazebo Simulation
 * RViz Visualization
@@ -289,4 +361,3 @@ M.Eng Robotics Engineering
 University of Applied Sciences Hamburg
 
 Robotics | ROS | Autonomous Navigation | Computer Vision
-
