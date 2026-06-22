@@ -358,6 +358,6 @@ Through this project, the following robotics concepts were implemented and teste
 
 M.Eng Robotics Engineering
 
-University of Applied Sciences Hamburg
+FH schmalkalden
 
 Robotics | ROS | Autonomous Navigation | Computer Vision
